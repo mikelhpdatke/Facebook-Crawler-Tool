@@ -684,7 +684,7 @@ def main():
         login(email, password)
         # pickle.dump( driver.get_cookies() , open("cookies.pkl","wb"))
         scrap_profile(ids)
-        # driver.close()
+        driver.close()
     else:
         print("Input file is empty..")
 
