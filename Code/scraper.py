@@ -132,16 +132,20 @@ def scroll():
 
     while (True):
         try:
-            
-            listExpandCmd = driver.find_elements_by_class_name('_4sxd')
-            for expandElement in listExpandCmd:
-                try:
-                    expandElement.click()
-                except Exception:
-                    pass
+            print('[scrolls]', current_scrolls)
+            while (True):
+                listExpandCmd = driver.find_elements_by_class_name('_4sxd')
+                print(len(listExpandCmd))
+                if len(listExpandCmd) <= 1:
+                    break
+                for expandElement in listExpandCmd:
+                    try:
+                        expandElement.click()
+                    except Exception:
+                        pass
+                
             if current_scrolls == total_scrolls:
                 return
-
             old_height = driver.execute_script("return document.body.scrollHeight")
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             WebDriverWait(driver, scroll_time, 0.05).until(lambda driver: check_height())
