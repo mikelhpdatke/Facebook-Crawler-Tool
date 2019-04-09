@@ -136,8 +136,9 @@ def scroll():
                 listExpandCmd = driver.find_elements_by_class_name('_4ssp')
                 for expandElement in listExpandCmd:
                     expandElement.click()
-            except Exception:
+            except Exception as e:
                 print('expand comments done!')
+                print(str(e))
             if current_scrolls == total_scrolls:
                 return
 
@@ -677,7 +678,7 @@ def main():
         login(email, password)
         # pickle.dump( driver.get_cookies() , open("cookies.pkl","wb"))
         scrap_profile(ids)
-        driver.close()
+        # driver.close()
     else:
         print("Input file is empty..")
 
