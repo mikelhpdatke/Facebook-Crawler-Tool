@@ -137,14 +137,8 @@ def scroll():
             for expandElement in listExpandCmd:
                 try:
                     expandElement.click()
-<<<<<<< HEAD
-            except Exception as e:
-                print('expand comments done!')
-                print(str(e))
-=======
                 except Exception:
                     pass
->>>>>>> 98893fd07342d2f01a12d9798ba26e0aeed11591
             if current_scrolls == total_scrolls:
                 return
 
