@@ -132,12 +132,13 @@ def scroll():
 
     while (True):
         try:
-            try:
-                listExpandCmd = driver.find_elements_by_class_name('_4ssp')
-                for expandElement in listExpandCmd:
+            
+            listExpandCmd = driver.find_elements_by_class_name('_4sxd')
+            for expandElement in listExpandCmd:
+                try:
                     expandElement.click()
-            except Exception:
-                print('expand comments done!')
+                except Exception:
+                    pass
             if current_scrolls == total_scrolls:
                 return
 
@@ -217,17 +218,17 @@ def get_time(x):
 
 def extract_and_write_posts(elements, filename):
     try:
-        f = open(filename, "w", newline='\r\n')
-        f.writelines(' TIME || TYPE  || TITLE || STATUS  ||   LINKS(Shared Posts/Shared Links etc) ' + '\n' + '\n')
+        f = open(filename, "w", encoding="utf-8", newline='\r\n')
+        # f.writelines(' TIME || TYPE  || TITLE || STATUS  ||   LINKS(Shared Posts/Shared Links etc) ' + '\n' + '\n')
 
         for x in elements:
             # print(x.text)
             try:
-                video_link = " "
+                # video_link = " "
                 title = " "
                 status = " "
                 link = ""
-                img = " "
+                # img = " "
                 time = " "
 
                 # time
@@ -287,21 +288,27 @@ def extract_and_write_posts(elements, filename):
                 comments = x.find_element_by_class_name('_7791')
                 # print(comments.find_elements_by_tag_name('li'))
                 # print('end find')
-                for comment in comments.find_elements_by_tag_name('li'):
-                    user = comment.find_element_by_class_name('_6qw4').text
-                    content = comment.find_element_by_class_name('_3l3x').text
-                    print(user)
-                    print(content)
-                    # print(comment.text)
-                    print('???????????/')
-                print('----------------')
+                f.writelines('______________________________\n')
                 line = str(time) + " || " + str(type) + ' || ' + str(title) + ' || ' + str(status) + ' || ' + str(
                     link) + "\n"
-
                 try:
                     f.writelines(line)
-                except:
-                    print('Posts: Could not map encoded characters')
+                except Exception as e:
+                    print('Posts: Could not map encoded characters', e)
+
+                for cmt in comments.find_elements_by_class_name('_72vr'):
+                    f.writelines('--------------------------\n')
+                    try:
+                        user = cmt.find_element_by_class_name('_6qw4').text
+                        f.writelines(user+'\n')
+                    except:
+                        f.writelines('*\n')
+                    try:
+                        content = cmt.find_element_by_class_name('_3l3x').text
+                        f.writelines(content+'\n')
+                    except:
+                        f.writelines('*\n')
+                    # print(comment.text)
             except:
                 pass
         f.close()
@@ -515,10 +522,6 @@ def scrap_profile(ids):
         try:
             if not os.path.exists(os.path.join(folder, id.split('/')[-1])):
                 os.mkdir(os.path.join(folder, id.split('/')[-1]))
-            else:
-                print("A folder with the same profile name already exists."
-                      " Kindly remove that folder first and then run this code.")
-                continue
             os.chdir(os.path.join(folder, id.split('/')[-1]))
         except:
             print("Some error occurred in creating the profile directory.")
@@ -665,7 +668,7 @@ def login(email, password):
 
 def main():
     ids = ["https://en-gb.facebook.com/" + line.split("/")[-1] for line in open("input.txt", newline='\n')]
-
+    print(ids)
     if len(ids) > 0:
         # Getting email and password from user to login into his/her profile
         # email = input('\nEnter your Facebook Email: ')
